@@ -19,6 +19,9 @@ public class MapsActivity extends FragmentActivity {
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
     private PointDataSource dataSource = new PointDataSource(this);
+    private final LatLng ilmenauCityCenterPosition = new LatLng(50.684412, 10.925406);
+    private final int zoomLevelThatFitsIlmenauOnScreen = 13;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,13 +72,11 @@ public class MapsActivity extends FragmentActivity {
      * This should only be called once and when we are sure that {@link #mMap} is not null.
      */
     private void setUpMap() {
-
-        mMap.addMarker(new MarkerOptions().position(new LatLng(50.684412, 10.925406)).title("Marker")); // setzt Marker auf Ilmenau
+        mMap.addMarker(new MarkerOptions().position(ilmenauCityCenterPosition).title("Marker"));
         //SdHelp.drawMarker("Marker",50.684412, 10.925406);
-        mMap.setMyLocationEnabled(true); //zeigt eigene Position
-        LatLng ilmenauPos = new LatLng(50.684412, 10.925406); // Koordinaten Ilmenau"Mitte"
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(ilmenauPos)); // setzt Kamera auf Ilmenau
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(13)); //setze Zoomstufe
+        mMap.setMyLocationEnabled(true);
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(ilmenauCityCenterPosition));
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(zoomLevelThatFitsIlmenauOnScreen));
 
       /*  Bringt App zum Abstuerzen
  // Get LocationManager object from System Service LOCATION_SERVICE
@@ -94,10 +95,10 @@ public class MapsActivity extends FragmentActivity {
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 
         // Get latitude of the current location
-        double latitude = myLocation.getLatitude();
+        double currentLatitude = myLocation.getLatitude();
 
         // Get longitude of the current location
-        double longitude = myLocation.getLongitude();
+        double currentLongitude = myLocation.getLongitude();
 
         // Create a LatLng object for the current location
         LatLng latLng = new LatLng(latitude, longitude);
