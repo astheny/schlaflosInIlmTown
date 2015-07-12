@@ -1,6 +1,7 @@
 package de.sd.ilmapp;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
@@ -24,7 +25,7 @@ public class PointDataSource {
             PointDbHelper.COLUMN_WEBLINK
     };
 
-    public PointDataSource() {
+    public PointDataSource(Context context) {
         dbHelper = new PointDbHelper(context);
 
     }
@@ -38,15 +39,19 @@ public class PointDataSource {
         dbHelper.close();
     }
 
-    public Point createPoint(Sting name) {
+    public Point createPoint(String name) {
         ContentValues values = new ContentValues();
         values.put(PointDbHelper.COLUMN_NAME, name);
         long insertId = database.insert(PointDbHelper.TABLE_POINT,null,values);
 
         Cursor cursor = database.query(PointDbHelper.TABLE_POINT,
                 columns,
-                PointDbHelper.COLUMN_ID)+ "=" +insertId,
+                PointDbHelper.COLUMN_ID+ "=" +insertId,
                 null,null,null,null);
+
+        cursor.moveToFirst();
+
+        return populatePoint(cursor);
     }
 
 
@@ -62,7 +67,7 @@ public class PointDataSource {
     }
 
     private Point populatePoint(Cursor cursor){
-        int idIntex=cursor.getColumnIndex(PointDbHelper.COLUMN_ID);
+        int idIndex=cursor.getColumnIndex(PointDbHelper.COLUMN_ID);
         int nameIndex=cursor.getColumnIndex(PointDbHelper.COLUMN_NAME);
         int latIndex=cursor.getColumnIndex(PointDbHelper.COLUMN_LAT);
         int lngIndex=cursor.getColumnIndex(PointDbHelper.COLUMN_LNG);
@@ -70,9 +75,13 @@ public class PointDataSource {
         int longInfoIndex=cursor.getColumnIndex(PointDbHelper.COLUMN_LONGINFO);
         int webLinkIndex=cursor.getColumnIndex(PointDbHelper.COLUMN_WEBLINK);
 
-        Point point= new Point(cursor.getString(nameIndex));
-        point.setId(cursor.get);
+        Point point = new Point(
+                cursor.getInt(idIndex),
+                cursor.getString(nameIndex),
+                cursor.getDouble(latIndex),
+                cursor.getDouble(lngIndex));
 
+        return point;
         //7.6 daten speichern
     }
 }
