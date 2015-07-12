@@ -6,10 +6,11 @@ import com.google.android.gms.maps.model.LatLng;
  * Created by Sebastian on 04.07.2015.
  */
 public class Point {
+    // TODO: wirklich benötigt?
     private int id;
     private String name;
-    private double Lat;
-    private double Lng;
+    private double Latitude;
+    private double longitude;
     private String shortInfo;
     private String longInfo;
     private String webLink;
@@ -18,16 +19,17 @@ public class Point {
         return id;
     }
 
+    // TODO: ID is unique? why set it after construction?
     public void setId(int id) {
         this.id = id;
     }
 
-    public double getLat() {
-        return Lat;
+    public double getLatitude() {
+        return Latitude;
     }
 
-    public void setLat(double lat) {
-        Lat = lat;
+    public void setLatitude(double latitude) {
+        Latitude = latitude;
     }
 
     public String getWebLink() {
@@ -46,12 +48,12 @@ public class Point {
         this.name = name;
     }
 
-    public double getLng() {
-        return Lng;
+    public double getLongitude() {
+        return longitude;
     }
 
-    public void setLng(double lng) {
-        Lng = lng;
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
     }
 
     public String getShortInfo() {
@@ -73,9 +75,7 @@ public class Point {
     public Point(int id, String name, double lat, double lng) {
         this.id = id;
         this.name = name;
-        Lat = lat;
-        Lng = lng;
-
-
+        Latitude = lat;
+        longitude = lng;
     }
 }
